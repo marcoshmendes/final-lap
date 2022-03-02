@@ -8,8 +8,8 @@ Control your car by coding over a virtual ECU (McLaren) framework and make the b
 
 ## Description
 
-This project is based on how F1 hardware/software works. Every car has an hardware called ECU (electronic control unit), this hardware is the "brain" of car, it controls the engine, gear box, throttle, hybrid systems, sensors and more. This item is made by McLaren, and it is delivered within a framework with specific rules that every team has to implement their own code over it. The best code will reach a better performance of the car at race.
+This project is based on how F1 hardware/software works. Every car has a hardware called ECU (electronic control unit). This hardware is the "brain" of car, it controls the engine, gear box, throttle, hybrid systems, sensors and more. This item is made by McLaren, and it is delivered within a framework with specific rules where every team has to implement their own code over it. The best code will reach a better performance of the car at race.
 
-The objective of this project is to get closer of this concept, we will built a "virtual ECU" and delivery a framework for you. You must implement your own code over this framework and see the results in your car making the lap automatically on our track.
+The objective of this project is to get closer of this concept. We will built a "virtual ECU" and delivery a framework for you. You must implement your own code over this framework and see the results in your car making the lap automatically on our track.
 
 [This video explains the concept of ECU] (https://www.youtube.com/watch?v=QuDxbjfxFfc)
