@@ -1,52 +1,43 @@
-// IMPORTANT: draft script, the code needs to be in modules in the future
+import AssetManager from './asset-manager.js';
 
-var CANVAS_WIDTH = 1280;
+var CANVAS_WIDTH = 1200;
 var CANVAS_HEIGHT = 720;
 var canvas = document.getElementById('raceCanvas');
 var context = canvas.getContext('2d');
+var assetManager = AssetManager(context);
 
-canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
+canvas.width = CANVAS_WIDTH;
 
-var backgroundReady = false;
-var backgroundImage = new Image();
+// Temp Button to Render Manually without requestAnimationFrame
+var renderManually = document.getElementById('renderButton');
+renderManually.addEventListener('click', start);
 
-backgroundImage.onload = function () {
-	backgroundReady = true;
-};
-
-backgroundImage.src = "./assets/scenario/background_0011.png";
-
-function render() {
-    if (backgroundReady) {
-        var backgroundImageWidth = backgroundImage.width;
-        var maxGrassSquaresHorizontal = Math.floor(CANVAS_WIDTH / backgroundImageWidth);
-        var maxGrassSquares = Math.floor((CANVAS_WIDTH * CANVAS_HEIGHT) / backgroundImageWidth);
-
-        var countHorizontalSquareDrawed = 0;
-        var xAxis = backgroundImageWidth;
-        var yAxis = 0;
-
-        
-        // for (var i = 0; i < maxGrassSquares; i++) {
-        //     if (countHorizontalSquareDrawed >= maxGrassSquaresHorizontal) {
-        //         context.drawImage(backgroundImage, xAxis * i, yAxis + 1);
-        //         countHorizontalSquareDrawed++;
-        //     } else {
-        //         context.drawImage(backgroundImage, xAxis * i, yAxis);
-        //         countHorizontalSquareDrawed++
-        //     }
-        // }
-	}
+function start() {
+    assetManager.queueDownload('./assets/scenario/background_0011.png');
+    assetManager.queueDownload('./assets/scenario/tile_0004.png');
+    assetManager.downloadAll(function() {
+        renderTrack();
+    });
+    
+    // requestAnimationFrame(main);
 }
 
-function main() {
-    render();
+function renderTrack() {
+    var grassBackgroundImage = assetManager.getAsset('./assets/scenario/background_0011.png');
 
-    requestAnimationFrame(main);
+    var backgroundImageWidth = grassBackgroundImage.width;
+    var backgroundImageHeight = grassBackgroundImage.height;
+
+    var rows = Math.floor(CANVAS_HEIGHT / backgroundImageWidth) * backgroundImageWidth; // 30
+    var columns = Math.floor(CANVAS_WIDTH / backgroundImageHeight) * backgroundImageHeight; // 53
+
+    for (var row = 0; row <= rows; row++) {
+        for (var column = 0; column <= columns; column++) {
+            context.drawImage(grassBackgroundImage, backgroundImageWidth * column, row);
+        }
+    }
 }
 
 var currentWindow = window;
 requestAnimationFrame = currentWindow.requestAnimationFrame || currentWindow.webkitRequestAnimationFrame || currentWindow.msRequestAnimationFrame || currentWindow.mozRequestAnimationFrame;
-
-main();
