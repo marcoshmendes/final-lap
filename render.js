@@ -4,7 +4,7 @@ var CANVAS_WIDTH = 1200;
 var CANVAS_HEIGHT = 720;
 var canvas = document.getElementById('raceCanvas');
 var context = canvas.getContext('2d');
-var assetManager = AssetManager(context);
+var assetManager = AssetManager();
 
 canvas.height = CANVAS_HEIGHT;
 canvas.width = CANVAS_WIDTH;
@@ -21,7 +21,7 @@ function start() {
         renderTrack();
     });
     
-    // requestAnimationFrame(main);
+    // requestAnimationFrame(start);
 }
 
 function renderTrack() {
@@ -61,7 +61,20 @@ function renderTrack() {
     for (var i = 0; i <= NUMBER_OF_TREES; i++) {
         context.drawImage(treeImage, getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_X, columns), getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_Y, rows));
     }
+
+    var ROAD_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * 2;
+    var ROAD_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * 2;
+
+    context.beginPath();
+    context.moveTo(ROAD_MIN_LOCATION_LIMIT_AXIS_X, ROAD_MIN_LOCATION_LIMIT_AXIS_X);
+    context.lineTo(1100, ROAD_MIN_LOCATION_LIMIT_AXIS_X);
+    context.lineTo(1100, 110);
+    context.lineTo(ROAD_MIN_LOCATION_LIMIT_AXIS_X, 110);
+    context.fillStyle = '#606060';
+    context.fill();
 }
+
+start();
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
