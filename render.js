@@ -50,6 +50,15 @@ function renderTrack() {
             if (row === 0 && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
                 context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
             }
+            if ((row + sandBackgroundImageHeight) === CANVAS_HEIGHT && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
+                context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
+            }
+            if (column === 0 && (sandBackgroundImageHeight * row) <= CANVAS_HEIGHT) {
+                context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row));
+            }
+            if ((column + sandBackgroundImageWidth) === CANVAS_WIDTH && (sandBackgroundImageWidth * row) <= CANVAS_HEIGHT) {
+                context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row) + sandBackgroundImageHeight);
+            }
         }
     }
 
