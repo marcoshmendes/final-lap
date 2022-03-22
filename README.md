@@ -15,4 +15,4 @@ This project is based on how F1 hardware/software works. Every car has a hardwar
 
 The objective of this project is to get closer of this concept. We will built a "virtual ECU" and delivery a framework for you. You must implement your own code over this framework and see the results in your car making the lap automatically on our track.
 
-[This video explains the concept of ECU] (https://www.youtube.com/watch?v=QuDxbjfxFfc)
+🎞️ [This video explains the concept of ECU](https://www.youtube.com/watch?v=QuDxbjfxFfc)
