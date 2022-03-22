@@ -50,12 +50,15 @@ function renderTrack() {
             if (row === 0 && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
                 context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
             }
+
             if ((row + sandBackgroundImageHeight) === CANVAS_HEIGHT && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
                 context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
             }
+            
             if (column === 0 && (sandBackgroundImageHeight * row) <= CANVAS_HEIGHT) {
                 context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row));
             }
+            
             if ((column + sandBackgroundImageWidth) === CANVAS_WIDTH && (sandBackgroundImageWidth * row) <= CANVAS_HEIGHT) {
                 context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row) + sandBackgroundImageHeight);
             }
@@ -64,8 +67,8 @@ function renderTrack() {
 
     // random trees
     var NUMBER_OF_TREES = 25;
-    var TREE_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * 1;
-    var TREE_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * 1;
+    var TREE_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * 2;
+    var TREE_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * 2;
 
     for (var i = 0; i <= NUMBER_OF_TREES; i++) {
         context.drawImage(treeImage, getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_X, columns), getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_Y, rows));
