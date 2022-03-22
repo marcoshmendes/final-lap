@@ -9,10 +9,6 @@ var assetManager = AssetManager();
 canvas.height = CANVAS_HEIGHT;
 canvas.width = CANVAS_WIDTH;
 
-// Temp Button to Render Manually without requestAnimationFrame
-var renderManually = document.getElementById('renderButton');
-renderManually.addEventListener('click', start);
-
 function start() {
     assetManager.queueDownload('./assets/scenario/background_0011.png');
     assetManager.queueDownload('./assets/scenario/tile_0047.png');
