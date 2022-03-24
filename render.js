@@ -1,17 +1,13 @@
 import AssetManager from './asset-manager.js';
 
-var CANVAS_WIDTH = 1200;
+var CANVAS_WIDTH = 1400;
 var CANVAS_HEIGHT = 720;
 var canvas = document.getElementById('raceCanvas');
 var context = canvas.getContext('2d');
-var assetManager = AssetManager(context);
+var assetManager = AssetManager();
 
 canvas.height = CANVAS_HEIGHT;
 canvas.width = CANVAS_WIDTH;
-
-// Temp Button to Render Manually without requestAnimationFrame
-var renderManually = document.getElementById('renderButton');
-renderManually.addEventListener('click', start);
 
 function start() {
     assetManager.queueDownload('./assets/scenario/background_0011.png');
@@ -21,7 +17,7 @@ function start() {
         renderTrack();
     });
     
-    // requestAnimationFrame(main);
+    // requestAnimationFrame(start);
 }
 
 function renderTrack() {
@@ -34,28 +30,31 @@ function renderTrack() {
     var sandBackgroundImageWidth = sandBackgroundImage.width;
     var sandBackgroundImageHeight = sandBackgroundImage.height;
 
-    var rows = Math.floor(CANVAS_HEIGHT / grassBackgroundImageWidth) * grassBackgroundImageWidth; // 30
-    var columns = Math.floor(CANVAS_WIDTH / grassBackgroundImageHeight) * grassBackgroundImageHeight; // 53
+    var rowsNumber = Math.floor(CANVAS_HEIGHT / grassBackgroundImageWidth) * grassBackgroundImageWidth;
+    var columnsNumber = Math.floor(CANVAS_WIDTH / grassBackgroundImageHeight) * grassBackgroundImageHeight;
 
     // grass
-    for (var row = 0; row <= rows; row++) {
-        for (var column = 0; column <= columns; column++) {
+    for (var row = 0; row <= rowsNumber; row++) {
+        for (var column = 0; column <= columnsNumber; column++) {
             context.drawImage(grassBackgroundImage, grassBackgroundImageWidth * column, row);
         }
     }
 
     // sand corners
-    for (var row = 0; row <= rows; row++) {
-        for (var column = 0; column <= columns; column++) {
+    for (var row = 0; row <= rowsNumber; row++) {
+        for (var column = 0; column <= columnsNumber; column++) {
             if (row === 0 && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
                 context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
             }
+
             if ((row + sandBackgroundImageHeight) === CANVAS_HEIGHT && (sandBackgroundImageWidth * column) <= CANVAS_WIDTH) {
                 context.drawImage(sandBackgroundImage, (sandBackgroundImageWidth * column), row);
             }
+            
             if (column === 0 && (sandBackgroundImageHeight * row) <= CANVAS_HEIGHT) {
                 context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row));
             }
+
             if ((column + sandBackgroundImageWidth) === CANVAS_WIDTH && (sandBackgroundImageWidth * row) <= CANVAS_HEIGHT) {
                 context.drawImage(sandBackgroundImage, column, (sandBackgroundImageHeight * row) + sandBackgroundImageHeight);
             }
@@ -63,19 +62,55 @@ function renderTrack() {
     }
 
     // random trees
-    var NUMBER_OF_TREES = 25;
-    var TREE_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * 1;
-    var TREE_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * 1;
+    var NUMBER_OF_TREES = 30;
+    var MARGIN_SPRITE_NUMBER = 2;
+    var TREE_START_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * MARGIN_SPRITE_NUMBER;
+    var TREE_START_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * MARGIN_SPRITE_NUMBER;
+    var TREE_END_MIN_LOCATION_LIMIT_AXIS_X = columnsNumber - (sandBackgroundImageWidth * MARGIN_SPRITE_NUMBER);
+    var TREE_END_MIN_LOCATION_LIMIT_AXIS_Y = rowsNumber - (sandBackgroundImageHeight * MARGIN_SPRITE_NUMBER);
 
-    for (var i = 0; i <= NUMBER_OF_TREES; i++) {
-        context.drawImage(treeImage, getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_X, columns), getRandomInt(TREE_MIN_LOCATION_LIMIT_AXIS_Y, rows));
+    for (var i = 0; i < NUMBER_OF_TREES; i++) {
+        var xAxis = getRandomInt(TREE_START_MIN_LOCATION_LIMIT_AXIS_X, TREE_END_MIN_LOCATION_LIMIT_AXIS_X);
+        var yAxis = getRandomInt(TREE_START_MIN_LOCATION_LIMIT_AXIS_Y, TREE_END_MIN_LOCATION_LIMIT_AXIS_Y);
+        
+        context.drawImage(treeImage, xAxis, yAxis);
     }
+
+    var ROAD_MIN_LOCATION_LIMIT_AXIS_X = sandBackgroundImageWidth * 2;
+    var ROAD_MIN_LOCATION_LIMIT_AXIS_Y = sandBackgroundImageHeight * 2;
+
+    context.beginPath();
+    context.moveTo(ROAD_MIN_LOCATION_LIMIT_AXIS_X, ROAD_MIN_LOCATION_LIMIT_AXIS_X);
+    context.lineTo(1100, ROAD_MIN_LOCATION_LIMIT_AXIS_X);
+    context.lineTo(1100, 110);
+    context.lineTo(ROAD_MIN_LOCATION_LIMIT_AXIS_X, 110);
+    context.fillStyle = '#606060';
+    context.fill();
 }
+
+start();
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
+    
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function getCoordHexColor(xAxis, yAxis) {
+    var RGBToHex = function(colorValue) {
+        var hex = colorValue.toString(16);
+        
+        return hex.length === 1 ? '0' + hex : hex;
+    }
+
+    //RGBA array
+    var pixelData = context.getImageData(xAxis, yAxis, 1, 1).data;
+    var rColorInHex = RGBToHex(pixelData[0]);
+    var gColorInHex = RGBToHex(pixelData[1]);
+    var bColorInHex = RGBToHex(pixelData[2]);
+
+    return '#' + rColorInHex + gColorInHex + bColorInHex;
 }
 
 var currentWindow = window;
