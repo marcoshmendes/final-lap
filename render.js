@@ -98,19 +98,19 @@ function getRandomInt(min, max) {
 }
 
 function getCoordHexColor(xAxis, yAxis) {
-    var componentToHex = function (component) {
-        var hex = component.toString(16);
+    var RGBToHex = function(colorValue) {
+        var hex = colorValue.toString(16);
+        
         return hex.length === 1 ? '0' + hex : hex;
     }
 
     //RGBA array
     var pixelData = context.getImageData(xAxis, yAxis, 1, 1).data;
+    var rColorInHex = RGBToHex(pixelData[0]);
+    var gColorInHex = RGBToHex(pixelData[1]);
+    var bColorInHex = RGBToHex(pixelData[2]);
 
-    var rToHex = componentToHex(pixelData[0]);
-    var gToHex = componentToHex(pixelData[1]);
-    var bToHex = componentToHex(pixelData[2]);
-
-    return `#${rToHex}${gToHex}${bToHex}`;
+    return '#' + rColorInHex + gColorInHex + bColorInHex;
 }
 
 var currentWindow = window;
