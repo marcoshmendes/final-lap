@@ -97,5 +97,21 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getCoordHexColor(xAxis, yAxis) {
+    var RGBToHex = function(colorValue) {
+        var hex = colorValue.toString(16);
+        
+        return hex.length === 1 ? '0' + hex : hex;
+    }
+
+    //RGBA array
+    var pixelData = context.getImageData(xAxis, yAxis, 1, 1).data;
+    var rColorInHex = RGBToHex(pixelData[0]);
+    var gColorInHex = RGBToHex(pixelData[1]);
+    var bColorInHex = RGBToHex(pixelData[2]);
+
+    return '#' + rColorInHex + gColorInHex + bColorInHex;
+}
+
 var currentWindow = window;
 requestAnimationFrame = currentWindow.requestAnimationFrame || currentWindow.webkitRequestAnimationFrame || currentWindow.msRequestAnimationFrame || currentWindow.mozRequestAnimationFrame;
